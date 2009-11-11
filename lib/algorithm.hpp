@@ -52,8 +52,8 @@ typename simple_measurement<typename I::value_type>::type mean(I first, I last) 
 	typedef typename I::value_type V;
 	V N = last - first;
 	V mean = sum(first, last) / N;
-	V square_sum = sum(first, last, _1 * _1);
-	return typename simple_measurement<V>::type(mean, std::sqrt(square_sum / (N * (N - 1)) + mean * mean));
+	V squared_mean = sum(first, last, _1 * _1) / N;
+	return typename simple_measurement<V>::type(mean, squared_mean - mean * mean);
 }
 
 template<class T>

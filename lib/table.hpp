@@ -226,12 +226,12 @@ public:
 	}
 
 	template<class T>
-	void set(const std::string& col, size_type row, const T& value) const {
+	void set(const std::string& col, size_type row, const T& value) {
 		column<T>(col).at(row) = value;
 	}
 
 	template<class T>
-	void set(size_type col, size_type row, const T& value) const {
+	void set(size_type col, size_type row, const T& value) {
 		column<T>(col).at(row) = value;
 	}
 
