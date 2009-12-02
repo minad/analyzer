@@ -3,9 +3,14 @@
 table alle_werte("alle_werte");
 
 void compute(const string& name) {
+	mdouble phi = 0.52 + sigma(0.05);
+	double f = 2./26;
+
 	table werte("werte");
 	werte.add<int>(name + " 1").add<int>(name + " 2");
 	werte.read_file("parity_data/" + name);
+
+	cout << mformat("%m %p %s (%S %)");
 
 	cout << name << endl;
 
@@ -14,7 +19,9 @@ void compute(const string& name) {
 	mdouble nx(sx, sx);
 	mdouble ny(sy, sy);
 
-	cout << (nx-ny)/(nx+ny) << endl;
+	mdouble E = (nx-ny)/(nx+ny);
+	cout << "E (summe) = " << E << endl;
+	cout << "P_C = " << E / (f * phi) << endl;
 
 	table abweichungen("abweichung");
 	abweichungen.add<double>(name + " abweichung");
@@ -24,7 +31,10 @@ void compute(const string& name) {
 	  abweichungen << double(nx-ny)/double(nx+ny);
 	}
 
-	cout << algorithm::mean(abweichungen.column<double>(0).begin(), abweichungen.column<double>(0).end()) << endl;
+	mdouble mean = algorithm::mean(abweichungen.column<double>(0).begin(), abweichungen.column<double>(0).end());
+	E = mdouble(mean.value(), mean.variance() / werte.rows());
+	cout << "E (gemittelt) = " << E << endl;
+	cout << "P_C = " << E / (f * phi) << endl;
 
 	alle_werte.add(werte.column(0)).add(werte.column(1)).add(abweichungen.column(0));
 }
@@ -32,5 +42,5 @@ void compute(const string& name) {
 void run() {
 	compute("werte.csv");
 	compute("werte2.csv");
-	cout << alle_werte << endl;
+	cout << default_mformat << alle_werte << endl;
 }

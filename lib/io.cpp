@@ -67,13 +67,17 @@ std::ostream& operator<<(std::ostream& out, const measurement<T, U>& m) {
 		boost::io::ios_precision_saver saver(out);
 		out << std::setprecision(15) << m.value() << ' ' << m.sigma() << ' ' << m.absolute_error();
 	} else {
-		std::string prefix, suffix, op;
+	  std::string prefix, suffix, op, percent_prefix, percent_suffix;
 		if (mode == LATEX) {
 			prefix = "\\num{";
 			suffix = "}";
-			op = "\\pm";
+			op = "\(\\pm\)";
+			percent_prefix = "\\SI{";
+			percent_suffix = "}{\\percent}";
 		} else {
 			op = "+/-";
+			percent_prefix = "";
+			percent_suffix = "%";
 		}
 
 		std::string str = get_mformat(out);
@@ -83,9 +87,9 @@ std::ostream& operator<<(std::ostream& out, const measurement<T, U>& m) {
 		replace_all(str, "%s", prefix + tostr(m.sigma()) + suffix);
 		replace_all(str, "%a", prefix + tostr(m.absolute_error()) + suffix);
 		replace_all(str, "%t", prefix + tostr(m.total_error()) + suffix);
-		replace_all(str, "%S", prefix + tostr(m.sigma_percent()) + suffix);
-		replace_all(str, "%A", prefix + tostr(m.absolute_error_percent()) + suffix);
-		replace_all(str, "%T", prefix + tostr(m.total_error_percent()) + suffix);
+		replace_all(str, "%S", percent_prefix + tostr(m.sigma_percent()) + percent_suffix);
+		replace_all(str, "%A", percent_prefix + tostr(m.absolute_error_percent()) + percent_suffix);
+		replace_all(str, "%T", percent_prefix + tostr(m.total_error_percent()) + percent_suffix);
 		out << str;
 	}
 	return out;
