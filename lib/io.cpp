@@ -71,7 +71,7 @@ std::ostream& operator<<(std::ostream& out, const measurement<T, U>& m) {
 		if (mode == LATEX) {
 			prefix = "\\num{";
 			suffix = "}";
-			op = "\(\\pm\)";
+			op = "\\(\\pm\\)";
 			percent_prefix = "\\SI{";
 			percent_suffix = "}{\\percent}";
 		} else {

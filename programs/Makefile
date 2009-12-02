@@ -7,4 +7,3 @@ all:
 .PHONY : $(PROGRAMS)
 $(PROGRAMS):
 	@(cd ..; make -s programs/$@)
-	@./$@
